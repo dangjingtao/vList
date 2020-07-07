@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul,
+        li {
+            list-style: none;
+        }
+
+        #list {
+            position: relative;
+            width: 500px;
+            border: 1px solid #666;
+            overflow-y: auto;
+        }
+
+        .item {
+            border-bottom: 1px solid #888;
+            display: flex;
+        }
+
+        .left {
+            width: 100px;
+            height: 64px;
+            background-color: #ddd;
+        }
+
+        .right {
+            flex: 1;
+            margin-left: 10px;
+        }
+
+        /* 滚动样式 */
+        ::-webkit-scrollbar {
+            width: 12px;
+            /* height: 5px; */
+            background-color: #fff;
+        }
+
+        ::-webkit-scrollbar:hover {
+            background-color: #eee;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #aaa;
+        }
+
+        ::-webkit-scrollbar-thumb:active {
+            background-color: #888;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="list">
+        <div class="ul"></div>
+    </div>
+
+
+    <script src="./data.js"></script>
+    <script src="./vlist.js"></script>
+    <script>
+        const data = getData({
+            nums: 10000,
+            cols: [{
+                colName: 'Id',
+                width: 80,
+                colIndex: 'id',
+                propType: 'String'
+            }, {
+                colName: 'Name',
+                width: 140,
+                colIndex: 'name',
+                propType: 'String'
+            }, {
+                colName: 'Age',
+                width: 80,
+                colIndex: 'age',
+                propType: 'Number'
+            }, {
+                colName: 'Address',
+                width: 200,
+                colIndex: 'address',
+                propType: 'String'
+            }]
+        });
+
+
+        vlist = new Vlist({
+            itemHeight: 65,
+            container: document.querySelector("#list"),
+            containerContent:document.querySelector('.ul'),// 可优化
+            maxHeight: document.documentElement.clientHeight,
+            isDebounce:true,
+            initData: data,
+            render: function (itemData, index) {
+                return `<div class="item">
+                            <div data-index="${index}" class="left">
+                            </div>
+                            <div class="right">
+                                <div class="title">${itemData.id}</div>
+                                <div class="price">${itemData.name}</div>
+                                <div class="price">${itemData.address}</div>
+                            </div>
+                        </div>`
+            },
+            itemEventHandlers:[
+                {
+                    eventTargetClass:'left',
+                    eventType:'click',
+                    handler:function(e){
+                        console.log(e.target)
+                    }
+                }
+            ]
+        });
+
+
+    </script>
+</body>
+
+</html>
